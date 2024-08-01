@@ -4,12 +4,12 @@ import chalkAnimation from 'chalk-animation';
 import figlet from 'figlet';
 import gradient from 'gradient-string';
 import { createSpinner } from 'nanospinner';
-import { fetchArtistsData } from './fetchArtists.js'; 
+import { fetchArtistsData } from './src/utils/fetchArtists.js'; 
 import terminalImage from 'terminal-image';
 import fetch from 'node-fetch';
 import sharp from 'sharp';
 
-import { classicMode } from './classicMode.js';
+import { classicMode } from './src/modes/classicMode.js';
 
 
 let playerName;

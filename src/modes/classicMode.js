@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import { fetchArtistsData } from './fetchArtists.js'; 
-import { displayArtistImages } from './imageRender.js';
+import { fetchArtistsData } from '../utils/fetchArtists.js'; 
+import { displayArtistImages } from '../utils/imageRender.js';
 
 let playerName;
 let currentArtist = null;
