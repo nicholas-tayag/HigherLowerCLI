@@ -1,6 +1,4 @@
 import SpotifyWebApi from 'spotify-web-api-node';
-import terminalImage from 'terminal-image';
-import fetch from 'node-fetch';
 
 const spotifyApi = new SpotifyWebApi({
   clientId: 'f1c2948a00fd4541922b6333322c0494',

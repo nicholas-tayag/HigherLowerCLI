@@ -17,18 +17,13 @@ let streak = 0;
 const resolveAnimations = (ms = 2000) => new Promise(resolve => setTimeout(resolve, ms));
 const spinner = createSpinner('loading next process');
 
-function displayFinalStreak() {
-    console.clear();
+function wrongAnswer() {
     spinner.warn({ text: `${chalk.bgRed('INCORRECT CHOICE')}` });
-    const finalMessage = `Your final streak was: ${streak}`;
-    figlet(finalMessage, (data) => {
-      console.log(gradient.retro(data));
-      process.exit(1); 
-    });
+    console.log(`Your final streak was: ${streak}`);
   }
 
 async function startGame() {
-  const welcomeMsg = chalkAnimation.rainbow('Welcome to the Higher Lower Game \n');
+  const welcomeMsg = chalkAnimation.rainbow('Welcome to the Higher Lower Game Spotify Ver., \n');
   await resolveAnimations();
   welcomeMsg.stop();
 
@@ -126,7 +121,7 @@ async function askQuestion() {
       currentArtist = choice === artist1.followers ? artist1 : artist2;
       askQuestion();
     } else {
-      displayFinalStreak();
+      wrongAnswer();
     }
   }
 // TESTING CODE:
