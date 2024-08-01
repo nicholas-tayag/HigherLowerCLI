@@ -6,8 +6,9 @@ import { displayArtistImages } from '../utils/imageRender.js';
 let playerName;
 let currentArtist = null;
 let streak = 0;
+const timeLimit = 10000; // 10 seconds per question
 
-export async function classicMode() {
+export async function timedMode() {
   await playerInfo();
   await askQuestion();
 }
@@ -19,9 +20,8 @@ async function playerInfo() {
     message: 'First, please enter your name: '
   });
   playerName = response.player_name;
-  console.log(`Hello, ${playerName}! Let's start the game.`);
+  console.log(`Hello, ${playerName}! Let's start the timed game.`);
 }
-
 
 async function askQuestion() {
   const artistsData = await fetchArtistsData();
@@ -36,15 +36,34 @@ async function askQuestion() {
 
   await displayArtistImages(currentArtist.image, newArtist.image);
 
+  const countdown = setInterval(() => {
+    timeRemaining--;
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    process.stdout.write(chalk.yellow(`Time remaining: ${timeRemaining}s`));
+  }, 1000);
+
+  let timeRemaining = timeLimit / 1000;
+  console.log(chalk.yellow(`You have 10 seconds to choose!`));
+
+  const timer = setTimeout(() => {
+    console.log(chalk.red('\nTime is up!'));
+    console.log(`Your final streak was: ${streak}`);
+    process.exit(1);
+  }, timeLimit);
+
   const answer = await inquirer.prompt({
     name: 'artist_choice',
     type: 'list',
-    message: `\n${chalk.bold('Who has more followers?')}`,
+    message: `\n${chalk.bold('Who has more followers?')}`, 
     choices: [
       { name: currentArtist.name, value: currentArtist.followers },
       { name: newArtist.name, value: newArtist.followers },
     ],
   });
+
+  clearTimeout(timer);
+  clearInterval(countdown);
   checkAnswer(answer.artist_choice, currentArtist, newArtist);
 }
 
@@ -61,4 +80,3 @@ function checkAnswer(choice, artist1, artist2) {
     process.exit(1); 
   }
 }
-

@@ -10,7 +10,7 @@ import fetch from 'node-fetch';
 import sharp from 'sharp';
 
 import { classicMode } from './src/modes/classicMode.js';
-
+import { timedMode } from './src/modes/timedMode.js';
 
 let playerName;
 let currentArtist = null;
