@@ -17,29 +17,68 @@ let streak = 0;
 const resolveAnimations = (ms = 2000) => new Promise(resolve => setTimeout(resolve, ms));
 const spinner = createSpinner('loading next process');
 
-function displayFinalStreak() {
-    console.clear();
-    spinner.warn({ text: `${chalk.bgRed('INCORRECT CHOICE')}` });
-    const finalMessage = `Your final streak was: ${streak}`;
-    figlet(finalMessage, (data) => {
-      console.log(gradient.retro(data));
-      process.exit(1); 
-    });
-  }
-
 async function startGame() {
-  const welcomeMsg = chalkAnimation.rainbow('Welcome to the Higher Lower Game \n');
+  const welcomeMsg = chalkAnimation.rainbow('Welcome to the Higher Lower Game Spotify Version! \n');
   await resolveAnimations();
   welcomeMsg.stop();
 
-  console.log(`
-    ${chalk.bgGreenBright('Let the game begin!')}
-    You will guess which artist has more followers on Spotify.
-    Make the right choice to continue, or the game ends.
-  `);
-  
+  await mainMenu();
+}
+
+async function mainMenu() {
+  console.clear();
+  console.log(chalk.greenBright(figlet.textSync('Main Menu')));
+
+  const options = [
+    {
+      name: 'Classic Mode - Guess which artist has more followers.',
+      value: 'classic'
+    },
+    {
+      name: 'Timed Mode - Answer under pressure with a timer.',
+      value: 'timed'
+    },
+    {
+      name: 'Leaderboard - View the top scores.',
+      value: 'leaderboard'
+    },
+    {
+      name: 'Exit',
+      value: 'exit'
+    }
+  ];
+
+  const choice = await inquirer.prompt({
+    name: 'menu_choice',
+    type: 'list',
+    message: 'Choose an option:',
+    choices: options
+  });
+
+  switch (choice.menu_choice) {
+    case 'classic':
+      await startClassicMode();
+      break;
+    case 'timed':
+      await startTimedMode();
+      break;
+    case 'leaderboard':
+      await showLeaderboard();
+      break;
+    case 'exit':
+      console.log('Goodbye!');
+      process.exit(0);
+  }
+}
+
+async function startClassicMode() {
   await playerInfo();
   await askQuestion();
+}
+
+function wrongAnswer() {
+  spinner.warn({ text: `${chalk.bgRed('INCORRECT CHOICE')}` });
+  console.log(`Your final streak was: ${streak}`);
 }
 
 async function playerInfo() {
@@ -126,7 +165,7 @@ async function askQuestion() {
       currentArtist = choice === artist1.followers ? artist1 : artist2;
       askQuestion();
     } else {
-      displayFinalStreak();
+      wrongAnswer();
     }
   }
 // TESTING CODE:
