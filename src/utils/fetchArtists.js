@@ -1,8 +1,8 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 
 const spotifyApi = new SpotifyWebApi({
-  clientId:  'f1c2948a00fd4541922b6333322c0494', //ENTER ID HERE
-  clientSecret: '003827bffd9b4755b8f97c0d0dd2a788', //ENTER SECRETID HERE
+  clientId:  '', //ENTER ID HERE
+  clientSecret: '', //ENTER SECRETID HERE
 });
 
 export const fetchArtistsData = () => {
